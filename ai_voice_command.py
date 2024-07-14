@@ -4,9 +4,9 @@ import webbrowser
 import datetime
 import wikipedia
 import time
+import ai_avatar
 import ai_variables
 
-name = 'Eva'
 def takeCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -23,11 +23,13 @@ def takeCommand():
         return Query
 
 def speak(audio):
+    ai_avatar.lbl.load('talking-avatar.gif')
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[1].id)
     engine.say(audio)
     engine.runAndWait()
+    ai_avatar.lbl.load('looking-avatar.gif')
 
 
 def tellDay():
@@ -48,22 +50,19 @@ def tellTime():
     speak("The time is sir" + time)
 
 def Hello():
-    speak("hello I am "+name+" your AI assistant. How are you ?")
+    speak("hello I am "+ai_variables.ai_avatar_name+" your AI assistant. How are you ?")
 
 
 def Take_query():
     while (True):
         time.sleep(.5)
         emotion = ""
-        try:
-            if(ai_variables.emotionsQ.empty() != True and ai_variables.emotionsQ.qsize() > 10) :
-                emotion = max(list(ai_variables.emotionsQ.queue))
-        except:
-            ""
+        if(ai_variables.emotionsQ.empty() != True and ai_variables.emotionsQ.qsize() > 10) :
+            emotion = max(list(ai_variables.emotionsQ.queue))
 
-        if "sad" in emotion:
-            speak("Hello sir are you feeling sad today ")
-            continue
+        #if "sad" in emotion:
+        #    speak("Hello sir are you feeling sad today ")
+        #    continue
 
         query = takeCommand().lower()
 
@@ -93,9 +92,9 @@ def Take_query():
             continue
 
         elif "what" in query and "your" in query and "name" in query:
-            speak("My name is "+name)
+            speak("My name is "+ai_variables.ai_avatar_name)
             continue
 
-        elif "start" in query and "eva" in query :
+        elif "start" in query and ai_variables.ai_avatar_name in query :
             Hello()
             continue

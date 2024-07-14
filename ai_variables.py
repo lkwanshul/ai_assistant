@@ -1,3 +1,4 @@
 from queue import Queue
 
-emotionsQ = Queue(maxsize = 50)
+ai_avatar_name = 'eva'
+emotionsQ = Queue(maxsize = 100)
